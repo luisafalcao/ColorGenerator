@@ -57,17 +57,25 @@ button {
     transform: translateY(-50%);
     display: none;
     
-    background-color: gray;
+    background-color: black;
+    color: white;
     border: none
 }
 
 #reset:hover {
-    background-color: #a9a9a9;
-}
-
-button:hover {
     background-color: white;
     color: black;
+}
+
+#hex button:hover {
+    background-color: white;
+    color: black;
+    font-weight: 700;
+}
+
+#rgb button:hover {
+    background-color: black;
+    color: white;
     font-weight: 700;
 }
 
