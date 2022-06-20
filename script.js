@@ -2,6 +2,7 @@ const generateRGBbtn = document.querySelector('#generate-rgb')
 const invertRGBbtn = document.querySelector('#invert-rgb')
 const generateHEXbtn = document.querySelector('#generate-hex')
 const invertHEXbtn = document.querySelector('#invert-hex')
+const resetBtn = document.querySelector('#reset')
 const circle = document.querySelector('.circle')
 const square = document.querySelector('.square')
 
@@ -19,11 +20,22 @@ let blue = ""
 
 let newRGBvalue = ""
 let newInvertedRGBvalue = ""
+let newHEXvalue = ""
+let newInvertedHEXvalue = ""
+let invertedHEXvalue = ""
+
+let fromHEXtoRGB = ""
 
 let invertedRed = ""
 let invertedGreen = ""
 let invertedBlue = ""
 
+// Grab Colors
+// const grabColor = (element) => {
+//     alert(window.getComputedStyle(element).getPropertyValue('background-color'))
+// }
+
+// Generate Colors (RGB)
 const generateRGB = () => {
     red = Math.floor(Math.random() * 255)
     green = Math.floor(Math.random() * 255)
@@ -40,8 +52,10 @@ const generateInvertedRGB = () => {
     newInvertedRGBvalue = `rgb(${invertedRed},${invertedGreen},${invertedBlue})`
 }
 
+// Click callbacks (RGB)
 const changeRGBcolor = () => {
     invertRGBbtn.style.display = 'inline-block'
+    resetBtn.style.display = 'inline-block'
     generateRGB()
     generateInvertedRGB()
 
@@ -75,18 +89,15 @@ const invertRGBcolor = () => {
     }
 }
 
+// Event Listeners (RGB)
 generateRGBbtn.addEventListener('click', changeRGBcolor)
 invertRGBbtn.addEventListener('click', invertRGBcolor)
+// sectionRGB.addEventListener('click', function(){
+//     grabColor(sectionRGB)
+// })
 
 
-
-
-
-let newHEXvalue = ""
-let fromHEXtoRGB = ""
-let newInvertedHEXvalue = ""
-let invertedHEXvalue = ""
-
+// Generate Colors (HEX)
 const generateHEX = () => {
     let decimals = []
     
@@ -142,8 +153,10 @@ const generateInvertedHEX = () => {
     }
 }
 
+// Click callbacks (HEX)
 const changeHEXcolor = () => {
     invertHEXbtn.style.display = 'inline-block'
+    resetBtn.style.display = 'inline-block'
     generateHEX()
     generateInvertedHEX()
 
@@ -167,5 +180,27 @@ const invertHEXcolor = () => {
         valueOfHEX.innerHTML = newHEXvalue
     }
 }
+
+// Event Listeners (HEX)
 generateHEXbtn.addEventListener('click', changeHEXcolor)
 invertHEXbtn.addEventListener('click', invertHEXcolor)
+
+// Reset
+const resetColors = () => {
+    resetBtn.style.display = 'none'
+    invertHEXbtn.style.display = 'none'
+    invertRGBbtn.style.display = 'none'
+
+    square.style.backgroundColor = 'black'
+    sectionHEX.style.backgroundColor = 'white'
+    valueOfHEX.innerHTML = '000000'
+
+    circle.style.backgroundColor = 'white'
+    sectionRGB.style.backgroundColor = 'black'
+    redRGB.innerHTML = '0'
+    greenRGB.innerHTML = '0'
+    blueRGB.innerHTML = '0'
+}
+
+// Event Listener (Reset)
+resetBtn.addEventListener('click', resetColors)

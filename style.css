@@ -14,6 +14,10 @@ html {
     box-sizing: inherit;
 }
 
+body {
+    position: relative;
+}
+
 .buttons {
     display: flex;
     flex-direction: column;
@@ -45,6 +49,20 @@ button {
 #invert-hex,
 #invert-rgb {
     display: none;
+}
+
+#reset {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    
+    background-color: gray;
+    border: none
+}
+
+#reset:hover {
+    background-color: #a9a9a9;
 }
 
 button:hover {
