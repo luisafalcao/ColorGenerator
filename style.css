@@ -79,6 +79,11 @@ button {
     font-weight: 700;
 }
 
+#hex button.active {
+    background-color: white;
+    font-weight: 700;
+}
+
 ul li {
     list-style: none;
 }
@@ -113,6 +118,7 @@ section#hex {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .circle {

@@ -1,8 +1,11 @@
 // buttons (DOM)
 const generateRGBbtn = document.querySelector('#generate-rgb')
 const invertRGBbtn = document.querySelector('#invert-rgb')
+
 const generateHEXbtn = document.querySelector('#generate-hex')
 const invertHEXbtn = document.querySelector('#invert-hex')
+
+const convertToRGBbtn = document.querySelector('#convert-to-rgb')
 const resetBtn = document.querySelector('#reset')
 
 // shapes (DOM)
@@ -16,13 +19,15 @@ const sectionHEX = document.querySelector('#hex')
 // values (DOM)
 const rgbPlaceholder = document.querySelector('.rgb-value')
 const hexPlaceholder = document.querySelector('.hex-value')
+const rgbConverted = document.querySelector('.rgb-converted')
+const hexConverted = document.querySelector('.hex-converted')
 
 //-------
 
 // generated RGB colors -> red: 0, green: 0, blue: 0
-let red = ""
-let green = ""
-let blue = ""
+let rgbRed = ""
+let rgbGreen = ""
+let rgbBlue = ""
 
 // generated RGB value -> rgb(0,0,0)
 let rgbValue = ""
@@ -46,23 +51,27 @@ let invertedHEXvalue = ""
 //-------
 
 // conversions
+let hexRed = ""
+let hexGreen = ""
+let hexBlue = ""
+
 let toHEX = ""
 let toRGB = ""
 
 
 // Generate Colors (RGB)
 const generateRGB = () => {
-    red = Math.floor(Math.random() * 255)
-    green = Math.floor(Math.random() * 255)
-    blue = Math.floor(Math.random() * 255)
+    rgbRed = Math.floor(Math.random() * 255)
+    rgbGreen = Math.floor(Math.random() * 255)
+    rgbBlue = Math.floor(Math.random() * 255)
     
-    rgbValue = `rgb(${red},${green},${blue})`
+    rgbValue = `rgb(${rgbRed},${rgbGreen},${rgbBlue})`
 }
 
 const generateInvertedRGB = () => {
-    invertedRed = 255 - red
-    invertedGreen = 255 - green
-    invertedBlue = 255 - blue
+    invertedRed = 255 - rgbRed
+    invertedGreen = 255 - rgbGreen
+    invertedBlue = 255 - rgbBlue
 
     invertedRGBvalue = `rgb(${invertedRed},${invertedGreen},${invertedBlue})`
 }
@@ -89,10 +98,10 @@ const invertRGBcolor = () => {
 
     // grab ccurrent circle and background colors
     let currentCircleColor = window.getComputedStyle(circle).getPropertyValue('background-color')
-    let currentBackgroundColor = window.getComputedStyle(sectionRGB).getPropertyValue('background-color')
+    let currentRGBbackgroundColor = window.getComputedStyle(sectionRGB).getPropertyValue('background-color')
     
     // switch circle and background colors
-    circle.style.backgroundColor = currentBackgroundColor
+    circle.style.backgroundColor = currentRGBbackgroundColor
     sectionRGB.style.backgroundColor = currentCircleColor
     // switch placeholder value
     if (rgbPlaceholder.innerHTML === rgbValue) {
@@ -142,20 +151,22 @@ const generateHEX = () => {
 }
 
 const generateInvertedHEX = () => {
-    let convertedRed = parseInt(hexValue[1]+hexValue[2],16);
-    let convertedGreen = parseInt(hexValue[3]+hexValue[4],16);
-    let convertedBlue = parseInt(hexValue[5]+hexValue[6],16);
+    // convert from hex to rgb
+    hexRed = parseInt(hexValue[1]+hexValue[2],16);
+    hexGreen = parseInt(hexValue[3]+hexValue[4],16);
+    hexBlue = parseInt(hexValue[5]+hexValue[6],16);
     
-    toRGB = `rgb(${convertedRed},${convertedGreen},${convertedBlue})`
+    toRGB = `rgb(${hexRed},${hexGreen},${hexBlue})`
 
-    let convertedInvertedRed = 255 - convertedRed
-    let convertedInvertedGreen = 255 - convertedGreen
-    let convertedInvertedBlue = 255 - convertedBlue
+    // invert rgb-turned hex
+    let invertedHEXred = 255 - hexRed
+    let invertedHEXgreen = 255 - hexGreen
+    let invertedHEXblue = 255 - hexBlue
 
-    invertedHEXvalue = `rgb(${convertedInvertedRed},${convertedInvertedGreen},${convertedInvertedBlue})`
+    invertedHEXvalue = `rgb(${invertedHEXred},${invertedHEXgreen},${invertedHEXblue})`
 
     // convert back to hex in order to have a variable to use on line 150
-    toHEX = "#" + ColorToHex(convertedInvertedRed) + ColorToHex(convertedInvertedGreen) + ColorToHex(convertedInvertedBlue)
+    toHEX = "#" + ColorToHex(invertedHEXred) + ColorToHex(invertedHEXgreen) + ColorToHex(invertedHEXblue)
 
     function ColorToHex(color) {
         let hexadecimal = color.toString(16);
@@ -167,6 +178,8 @@ const generateInvertedHEX = () => {
 const changeHEXcolor = () => {
     invertHEXbtn.style.display = 'inline-block'
     resetBtn.style.display = 'inline-block'
+    convertToRGBbtn.classList.remove('active')
+
     generateHEX()
     generateInvertedHEX()
 
@@ -176,13 +189,15 @@ const changeHEXcolor = () => {
 }
 
 const invertHEXcolor = () => {
+    convertToRGBbtn.classList.remove('active')
+
     generateInvertedHEX()
 
-    let currentHEXvalue = window.getComputedStyle(square).getPropertyValue('background-color')
-    let currentInvertedHEXvalue = window.getComputedStyle(sectionHEX).getPropertyValue('background-color')
+    let currentSquareColor = window.getComputedStyle(square).getPropertyValue('background-color')
+    let currentHEXbackgroundColor = window.getComputedStyle(sectionHEX).getPropertyValue('background-color')
 
-    square.style.backgroundColor = currentInvertedHEXvalue
-    sectionHEX.style.backgroundColor = currentHEXvalue
+    square.style.backgroundColor = currentHEXbackgroundColor
+    sectionHEX.style.backgroundColor = currentSquareColor
 
     if (hexPlaceholder.innerHTML === hexValue) {
         hexPlaceholder.innerHTML = toHEX
@@ -203,14 +218,22 @@ const resetColors = () => {
 
     square.style.backgroundColor = 'black'
     sectionHEX.style.backgroundColor = 'white'
-    hexPlaceholder.innerHTML = '000000'
+    hexPlaceholder.innerHTML = '#000000'
 
     circle.style.backgroundColor = 'white'
     sectionRGB.style.backgroundColor = 'black'
-    redRGB.innerHTML = '0'
-    greenRGB.innerHTML = '0'
-    blueRGB.innerHTML = '0'
+    rgbPlaceholder.innerHTML = 'rgb(255,255,255)'
 }
 
 // Event Listener (Reset)
 resetBtn.addEventListener('click', resetColors)
+
+// Get current RGB
+const getCurrentRGB = () => {
+    hexPlaceholder.innerHTML = window.getComputedStyle(square).getPropertyValue('background-color')
+
+    convertToRGBbtn.classList.add('active')
+}
+
+// Event Listener (Convert to RGB)
+convertToRGBbtn.addEventListener('click', getCurrentRGB)
